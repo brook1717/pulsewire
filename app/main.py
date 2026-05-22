@@ -2,17 +2,17 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from app.core.config import settings
+from app.api.routes.ops import router as ops_router
 from app.core.logging import setup_logging
+from app.services.scheduler.tasks import start_scheduler, stop_scheduler
 
 
 @asynccontextmanager
 async def lifespan(application: FastAPI):
     setup_logging()
-    # TODO: Initialize database tables
-    # TODO: Start APScheduler
+    start_scheduler()
     yield
-    # TODO: Shutdown scheduler
+    stop_scheduler()
 
 
 app = FastAPI(
@@ -21,6 +21,8 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan,
 )
+
+app.include_router(ops_router)
 
 
 @app.get("/health")

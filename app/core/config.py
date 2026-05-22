@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     # Scheduler
     SCHEDULER_INTERVAL_HOURS: int = 2
 
+    # API security
+    API_KEY: SecretStr = SecretStr("")
+
     # Logging
     LOG_LEVEL: str = "INFO"
 
